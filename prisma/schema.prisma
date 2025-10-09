@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Define a database
+model AdminUser {
+	id Int @id @default(autoincrement())
+	userType String
+	userName String @unique
+	password String
+}
+
+model ProductType {
+	id Int @id @default(autoincrement())
+	name String @unique
+	products Product[] // this connects to Product[] model
+}
+
+// Stores product details, including available quantity for each size, price, stock, etc
+model Product {
+	id Int @id @default(autoincrement()) // @ are attributes
+	name String
+	description String
+	mrp Float
+	sellPrice Float
+	image String
+	productTypeId Int
+	currentStock Int
+	rating Float? @default(0) // ? means nullable
+	smallSize Int @default(0)
+	mediumSize Int @default(0)
+	largeSize Int @default(0)
+	isActive Boolean @default(true)
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	productType ProductType @relation(fields: [productTypeId], references: [id])
+}
+
+// Stores information about customers, e.g., email, address, city.
+model BuyerMaster {
+	id Int @id @default(autoincrement())
+	customerName String
+	email String @unique
+	password String
+	address String? // ? means nullable
+	city String?
+	createdAt DateTime @default(now())
+	sales SalesMaster[] // 1️⃣ Define one to many first (parent)
+}
+
+// Represents each order
+model SalesMaster {
+	id String @id @default(uuid())
+	SODateTime DateTime
+	grandTotalPrice Float
+	paymentMode String
+	paymentDetails String?
+	bId Int
+	buyer BuyerMaster @relation(fields: [bId], references: [id])
+	salesTransaction SalesTransaction[] 
+}
+
+// Represents each item within a single order
+model SalesTransaction {
+	id String @id @default(uuid())
+	productId Int
+	productName String
+	unitPrice Float
+	qtyPurchased Int
+	total Float
+	SMOid String
+	salesMaster SalesMaster @relation(fields: [SMOid], references: [id])
+}
