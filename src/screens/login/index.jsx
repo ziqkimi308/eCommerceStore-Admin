@@ -4,11 +4,9 @@ import { loginUser } from "@/actions/authActions";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
-import { useSearchParams } from "next/navigation";
 
-export default function Login() {
-	const searchParams = useSearchParams();
-	const errorMessage = searchParams.get("errorMessage");
+export default function Login({ searchParams }) {
+	const errorMessage = searchParams?.errorMessage;
 
 	return (
 		<div className="h-screen bg-gray-100 flex justify-center items-center">

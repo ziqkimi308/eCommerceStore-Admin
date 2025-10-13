@@ -1,11 +1,11 @@
 import { createJWT, verifyJWT } from "@/lib/utils";
 import Login from "@/screens/login";
 
-export default async function LoginPage() {
+export default async function LoginPage({searchParams}) {
 
 	return (
 		<>
-			<Login />
+			<Login searchParams={searchParams} />
 		</>
 	);
 }
