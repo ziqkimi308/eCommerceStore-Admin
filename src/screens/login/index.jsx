@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { loginUser } from "@/actions/authActions";
 import Button from "@/components/ui/Button";
@@ -21,11 +21,11 @@ export default function Login() {
 						<span className="text-red-500 font-500">{errorMessage}</span>
 					</div>
 				)}
-				
+
 				<form className="grid gap-6" action={loginUser}>
 					<div className="grid gap-2">
 						<Label required className="font-semibold">
-							UserName
+							Username
 						</Label>
 						<Input
 							type="text"

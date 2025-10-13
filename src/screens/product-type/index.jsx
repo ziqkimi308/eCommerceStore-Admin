@@ -33,34 +33,40 @@ export default function ProductTypes({ productTypes }) {
 					<thead className="border-y-2 border-gray-400">
 						<tr>
 							<th>Sr. No.</th>
-							<th>User Name</th>
+							<th>Product Type</th>
 							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody className="text-gray-700 text-center font-medium text-lg">
-						{productTypes.map((productType, index) => (
-							<tr key={productType.id}>
-								<td>{index + 1}</td>
-								<td>{productType.name}</td>
-								<td className="flex items-center gap-x-3">
-									<Link
-										className="w-fit"
-										href={`/product-type/edit/${productType.id}`}
-									>
-										<EditIcon />
-									</Link>
-									<Button
-										className="bg-transparent p-0 text-red-500 border-none pt-1.5"
-										onClick={() => {
-											setIsDeleteModalOpen(true);
-											setSelectedId(productType.id);
-										}}
-									>
-										<DeleteIcon />
-									</Button>
-								</td>
+						{productTypes?.length > 0 ? (
+							productTypes.map((productType, index) => (
+								<tr key={productType.id}>
+									<td>{index + 1}</td>
+									<td>{productType.name}</td>
+									<td className="flex items-center gap-x-3">
+										<Link
+											className="w-fit"
+											href={`/product-type/edit/${productType.id}`}
+										>
+											<EditIcon />
+										</Link>
+										<Button
+											className="bg-transparent p-0 text-red-500 border-none pt-1.5"
+											onClick={() => {
+												setIsDeleteModalOpen(true);
+												setSelectedId(productType.id);
+											}}
+										>
+											<DeleteIcon />
+										</Button>
+									</td>
+								</tr>
+							))
+						) : (
+							<tr colSpan={5} className="!text-center">
+								<td>No Product Types Found.</td>
 							</tr>
-						))}
+						)}
 					</tbody>
 				</table>
 				{isDeleteModalOpen && (

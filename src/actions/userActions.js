@@ -50,7 +50,11 @@ export async function createUser(formData) {
 export const getUsers = async () => {
 	await jwtTokenVerification()
 
-	const users = await db.adminUser.findMany()
+	const users = await db.adminUser.findMany({
+		orderBy: {
+			id: "asc"
+		}
+	})
 	return users
 }
 

@@ -5,7 +5,7 @@ import Label from "@/components/ui/Label";
 
 export default async function AddUser({ searchParams }) {
 	const { errorMessage } = await searchParams;
-	console.log(errorMessage);
+	
 	return (
 		<div>
 			<h1 className="text-3xl font-semibold p-2">Add User</h1>

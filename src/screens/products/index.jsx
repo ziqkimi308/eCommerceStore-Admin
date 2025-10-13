@@ -44,58 +44,64 @@ export default function Products({ products }) {
 						</tr>
 					</thead>
 					<tbody className="text-gray-700 text-center font-medium text-lg">
-						{products.map((product) => {
-							return (
-								<tr key={product.id}>
-									<td className="flex gap-3 items-center">
-										<Image
-											src={"/" + product.image}
-											alt={product.name}
-											width={0}
-											height={0}
-											sizes="100vw"
-											className="w-20 h-20 object-cover"
-										/>
-										<div className="flex flex-col">
-											<span>{product.name}</span>
-											<span className="text-sm text-gray-500 truncate max-w-52">
-												{product.description}
-											</span>
-										</div>
-									</td>
-									<td>{product.productType.name || "-"}</td>
-									<td>{product.mrp || "0"}</td>
-									<td>{product.sellPrice || "0"}</td>
-									<td>{product.currentStock || "0"}</td>
-									<td
-										className={cn(
-											product.isActive ? "text-green-500" : "text-red-500"
-										)}
-									>
-										{product.isActive ? "Active" : "Inactive"}
-									</td>
-									<td>
-										<div>
-											<Link
-												className="w-fit"
-												href={`/products/edit/${product.id}`}
-											>
-												<EditIcon />
-											</Link>
-											<Button
-												className="bg-transparent p-0 text-red-500 border-none pt-1.5"
-												onClick={() => {
-													setIsDeleteModalOpen(true);
-													setSelectedProduct(product);
-												}}
-											>
-												<DeleteIcon />
-											</Button>
-										</div>
-									</td>
-								</tr>
-							);
-						})}
+						{products?.length > 0 ? (
+							products.map((product) => {
+								return (
+									<tr key={product.id}>
+										<td className="flex gap-3 items-center">
+											<Image
+												src={"/" + product.image}
+												alt={product.name}
+												width={0}
+												height={0}
+												sizes="100vw"
+												className="w-20 h-20 object-cover"
+											/>
+											<div className="flex flex-col">
+												<span>{product.name}</span>
+												<span className="text-sm text-gray-500 truncate max-w-52">
+													{product.description}
+												</span>
+											</div>
+										</td>
+										<td>{product.productType.name || "-"}</td>
+										<td>{product.mrp || "0"}</td>
+										<td>{product.sellPrice || "0"}</td>
+										<td>{product.currentStock || "0"}</td>
+										<td
+											className={cn(
+												product.isActive ? "text-green-500" : "text-red-500"
+											)}
+										>
+											{product.isActive ? "Active" : "Inactive"}
+										</td>
+										<td>
+											<div>
+												<Link
+													className="w-fit"
+													href={`/products/edit/${product.id}`}
+												>
+													<EditIcon />
+												</Link>
+												<Button
+													className="bg-transparent p-0 text-red-500 border-none pt-1.5"
+													onClick={() => {
+														setIsDeleteModalOpen(true);
+														setSelectedProduct(product);
+													}}
+												>
+													<DeleteIcon />
+												</Button>
+											</div>
+										</td>
+									</tr>
+								);
+							})
+						) : (
+							<tr colSpan={5} className="!text-center">
+								<td>No Product Found.</td>
+							</tr>
+						)}
 					</tbody>
 				</table>
 				{isDeleteModalOpen && (
