@@ -195,11 +195,13 @@ export async function handleDeleteImage(imagePath) {
 export async function deleteProduct(product) {
 	await jwtTokenVerification()
 
-	await db.product.delete({
-		where: {
-			id: parseInt(product.id)
-		}
-	})
-	await handleDeleteImage(product.image)
+	await Promise.all([
+		db.product.delete({
+			where: {
+				id: parseInt(product.id)
+			}
+		}),
+		handleDeleteImage(product.image)
+	])
 	revalidatePath("/products", "page")
 }

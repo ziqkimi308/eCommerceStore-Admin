@@ -3,39 +3,35 @@ import { formatDate } from "@/lib/utils";
 
 // Fetch all buyers for dashboard
 export async function getDashboardData() {
-	// Fetch all customer regardless they have buying record or not
-	const customerData = await db.buyerMaster.findMany({
-		orderBy: {
-			createdAt: "asc"
-		},
-		include: {
-			// sales came from SalesMaster
-			sales: true
-		}
-	})
+	// Use Parallel Data Fetching
+	const [customerData, salesMasterData] = await Promise.all([
+		// Fetch all customer regardless they have buying record or not
+		db.buyerMaster.findMany({
+			orderBy: {
+				createdAt: "asc"
+			},
+			include: {
+				// sales came from SalesMaster
+				sales: true
+			}
+		}),
+		// Fetch data from SalesMaster db
+		db.salesMaster.findMany({
+			include: {
+				buyer: true,
+				salesTransaction: true
+			},
+			orderBy: {
+				SODateTime: "desc"
+			}
+		})
+	])
+
 	// Filter so that only customer with buying record
 	const totalBuyers = customerData?.filter(customer => customer.sales?.length > 0)
 
-	// Fetch data from SalesMaster db
-	const salesMasterData = await db.salesMaster.findMany({
-		include: {
-			buyer: true,
-			salesTransaction: true
-		},
-		orderBy: {
-			SODateTime: "desc"
-		}
-	})
-
-	// Fetch data from BuyerMaster db
-	const buyerMasterData = await db.buyerMaster.findMany({
-		orderBy: {
-			createdAt: "asc"
-		}
-	})
-
 	// Generate number of customers vs date
-	const customersByDate = buyerMasterData?.reduce((acc, customer)=>{
+	const customersByDate = customerData?.reduce((acc, customer) => {
 		const date = formatDate(customer.createdAt)
 		if (!acc[date]) {
 			acc[date] = {
