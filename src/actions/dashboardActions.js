@@ -1,8 +1,10 @@
 import { db } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
+import { jwtTokenVerification } from "./authActions";
 
 // Fetch all buyers for dashboard
 export async function getDashboardData() {
+	await jwtTokenVerification()
 	// Use Parallel Data Fetching
 	const [customerData, salesMasterData] = await Promise.all([
 		// Fetch all customer regardless they have buying record or not

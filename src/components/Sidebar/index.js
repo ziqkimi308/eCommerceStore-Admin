@@ -5,8 +5,10 @@ import Image from "next/image"
 import { HomeIcon, LogoutIcon, ShoppingBagIcon, SwatchIcon, UsersIcon } from "../icons"
 import Button from "../ui/Button"
 import { logoutUser } from "@/actions/authActions"
+import { useUser } from "@/contexts/UserContext"
 
-export default function Sidebar({ userData }) {
+export default function Sidebar() {
+	const {userData} = useUser()
 	const menuItem = [
 		{ text: "Dashboard", url: "/", icon: <HomeIcon /> },
 		{ text: "Users", url: "/users", icon: <UsersIcon /> },

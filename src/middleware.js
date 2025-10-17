@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 export const config = {
 	// all routes except these must undergo middleware first of all
 	matcher: [
-		"/((?!_next/static|_next/image|favicon.ico|api|uploads).*)"
+		"/((?!_next/static|_next/image|favicon.ico|.*\\..*|api|uploads).*)"
 	]
 }
 
