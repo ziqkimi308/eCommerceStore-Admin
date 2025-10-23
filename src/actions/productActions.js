@@ -84,8 +84,25 @@ export async function getProducts() {
 	await jwtTokenVerification()
 
 	const products = await db.product.findMany({
-		include: {
-			productType: true
+		select: {
+			id: true,
+			name: true,
+			description: true,
+			sellPrice: true,
+			mrp: true,
+			image: true,
+			currentStock: true,
+			rating: true,
+			isActive: true,
+			productType: {
+				select: {
+					id: true,
+					name: true
+				}
+			}
+		},
+		orderBy: {
+			id: "asc"
 		}
 	})
 	return products

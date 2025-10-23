@@ -51,6 +51,12 @@ export const getUsers = async () => {
 	await jwtTokenVerification()
 
 	const users = await db.adminUser.findMany({
+		select: {
+			id: true,
+			userName: true,
+			userType: true
+			// password excluded for security
+		},
 		orderBy: {
 			id: "asc"
 		}
