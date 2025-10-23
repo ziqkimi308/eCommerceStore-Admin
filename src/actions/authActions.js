@@ -7,7 +7,7 @@ import { createJWT, verifyJWT } from "@/lib/token"
 import bcrypt from "bcrypt"
 import { redirect } from "next/navigation"
 import { getCookie, setCookie } from "@/lib/cookies"
-import { deleteCookies } from "../middleware"
+import { deleteCookies } from "../../proxy"
 
 export async function loginUser(formData) {
 	// Santize data
