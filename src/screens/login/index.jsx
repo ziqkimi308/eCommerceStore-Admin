@@ -15,7 +15,7 @@ export default function Login({ searchParams }) {
 
 				{/* Error Message */}
 				{errorMessage && (
-					<div className="col-span-2 border border-red-500 rounded-xl px-5 py-3 bg-red-50 ">
+					<div className="col-span-2 border border-red-500 rounded-xl px-5 py-3 bg-red-50 mb-5">
 						<span className="text-red-500 font-500">{errorMessage}</span>
 					</div>
 				)}

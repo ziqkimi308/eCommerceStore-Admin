@@ -1,15 +1,19 @@
 import { PrismaClient } from "@/generated/prisma";
 
-let db;
+// To stop making multiple prisma instance while it is active
+const globalForPrisma = globalThis
 
-if (process.env.NODE_ENV === "production") {
-	db = new PrismaClient();
-} else {
-	// Prevent multiple instances during dev/hot reload
-	if (!global.db) {
-		global.db = new PrismaClient();
-	}
-	db = global.db;
+if (!globalForPrisma.prisma) {
+	globalForPrisma.prisma = new PrismaClient({
+		log: process.env.NODE_ENV === 'development' ? ['error', 'warn']: ['error'],
+		datasources: {
+			db: {
+				url: process.env.DATABASE_URL
+			}
+		}
+	})
 }
 
-export { db };
+const db = globalForPrisma.prisma
+
+export {db}

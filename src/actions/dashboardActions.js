@@ -12,16 +12,41 @@ export async function getDashboardData() {
 			orderBy: {
 				createdAt: "asc"
 			},
-			include: {
-				// sales came from SalesMaster
-				sales: true
+			select: {
+				id: true,
+				customerName: true,
+				email: true,
+				createdAt: true,
+				sales: {
+					select: {
+						id: true,
+						grandTotalPrice: true
+					}
+				}
 			}
 		}),
 		// Fetch data from SalesMaster db
 		db.salesMaster.findMany({
-			include: {
-				buyer: true,
-				salesTransaction: true
+			select: {
+				id: true,
+				SODateTime: true,
+				grandTotalPrice: true,
+				paymentMode: true,
+				buyer: {
+					select: {
+						id: true,
+						customerName: true,
+						email: true
+					}
+				},
+				salesTransaction: {
+					select: {
+						id: true,
+						productName: true,
+						qtyPurchased: true,
+						total: true
+					}
+				}
 			},
 			orderBy: {
 				SODateTime: "desc"

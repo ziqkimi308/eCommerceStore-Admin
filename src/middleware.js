@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 import { verifyJWT } from "./lib/token";
 import { cookies } from "next/headers";
 
+// all routes except these must undergo middleware first of all
+// Next.js now expects you to use the export const matcher syntax directly, not nested inside a config object.
+export const matcher = [
+		'/((?!_next/static|_next/image|favicon.ico|.*\\..*|api|uploads).*)'
+	]
+
 // if it is named export, the function must be named "middleware"
 // middleware receives NextRequest object as parameter
 export default async function handler(req, res) {
@@ -21,13 +27,7 @@ export default async function handler(req, res) {
 	}
 }
 
-// Config for middleware
-export const config = {
-	// all routes except these must undergo middleware first of all
-	matcher: [
-		"/((?!_next/static|_next/image|favicon.ico|.*\\..*|api|uploads).*)"
-	]
-}
+
 
 /* Delete cookies. The reason this here because Edge middleware cannot import any file that includes native modules, even if the specific function you call doesn’t use them. If you put in authActions.js, it contains bcrypt, while you cannot put in cookies.js because it can only be in server  */
 export async function deleteCookies(name) {
