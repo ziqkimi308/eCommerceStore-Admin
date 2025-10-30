@@ -4,12 +4,12 @@ import { db } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation" // Makes sure import from this path! 
 import { jwtTokenVerification } from "./authActions"
-import { getCached, setCached } from "@/lib/cache"
+import { deleteCached, getCached, setCached } from "@/lib/cache"
 
 // Create data in db
 export async function createProductType(formData) {
 	await jwtTokenVerification()
-	
+
 	// Prepare data from html form
 	const data = {
 		name: formData.get("productType")
@@ -31,6 +31,8 @@ export async function createProductType(formData) {
 			name: data.name
 		}
 	})
+
+	deleteCached("product-types"); // clear cache
 	revalidatePath("/product-type", "page") // Update page cache
 	redirect("/product-type")
 }
@@ -46,7 +48,7 @@ export async function getProductTypes() {
 		console.log("✅ Product types from cache")
 		return cached
 	}
-	
+
 	const productTypes = await db.productType.findMany({
 		select: {
 			id: true,

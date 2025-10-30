@@ -1,19 +1,20 @@
 import { db } from "@/lib/db"
 import { NextResponse } from "next/server"
 
-export const revalidate = 60
+// export const revalidate = 60
 
 export async function GET(request, { params }) {
 	try {
-		const productId = params.productId
+		const {productId} = await params
+
+		// console.log({productId})
 
 		const product = await db.product.findUnique({
 			include: {
 				productType: true
 			},
 			where: {
-				id: Number(productId),
-				isActive: true
+				id: Number(productId)
 			}
 		})
 		if (!product) {
