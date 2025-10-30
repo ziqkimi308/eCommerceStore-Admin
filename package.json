@@ -4,7 +4,8 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"dev": "next dev -p 3001 --turbo",
+		"seed": "node prisma/seed.mjs",
+		"dev": "npm run seed && next dev -p 3001 --turbo",
 		"build": "prisma generate && next build",
 		"start": "next start",
 		"lint": "next lint"

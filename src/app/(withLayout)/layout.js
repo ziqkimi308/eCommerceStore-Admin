@@ -1,3 +1,5 @@
+"use server"
+
 import { getUserData } from "@/actions/authActions"
 import Sidebar from "@/components/Sidebar"
 import { UserProvider } from "@/contexts/UserContext"

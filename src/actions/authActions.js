@@ -4,10 +4,9 @@
 
 import { db } from "@/lib/db"
 import { createJWT, verifyJWT } from "@/lib/token"
-import bcrypt from "bcrypt"
 import { redirect } from "next/navigation"
 import { getCookie, setCookie } from "@/lib/cookies"
-import { deleteCookies } from "../../proxy"
+import bcrypt from "bcrypt"
 
 export async function loginUser(formData) {
 	// Santize data
@@ -44,7 +43,10 @@ export async function jwtTokenVerification() {
 	const token = await getCookie("jwt_token")
 	const tokenData = await verifyJWT(token)
 	if (!tokenData) {
-		await deleteCookies("jwt_token")
+		await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/delete-cookie`, {
+			method: "POST",
+			cache: "no-store",
+		});
 		return redirect("/login")
 	}
 
@@ -65,6 +67,9 @@ export async function getUserData() {
 
 // logout user
 export async function logoutUser() {
-	await deleteCookies("jwt_token")
+	await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/delete-cookie`, {
+		method: "POST",
+		cache: "no-store",
+	});
 	redirect("/login")
 }
